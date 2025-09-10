@@ -1,0 +1,702 @@
+[
+  {
+    "id": 1,
+    "name": "Kullanıcı1",
+    "username": "user1",
+    "email": "user1@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 2,
+    "name": "Kullanıcı2",
+    "username": "user2",
+    "email": "user2@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 3,
+    "name": "Kullanıcı3",
+    "username": "user3",
+    "email": "user3@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 4,
+    "name": "Kullanıcı4",
+    "username": "user4",
+    "email": "user4@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 5,
+    "name": "Kullanıcı5",
+    "username": "user5",
+    "email": "user5@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 6,
+    "name": "Kullanıcı6",
+    "username": "user6",
+    "email": "user6@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 7,
+    "name": "Kullanıcı7",
+    "username": "user7",
+    "email": "user7@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 8,
+    "name": "Kullanıcı8",
+    "username": "user8",
+    "email": "user8@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 9,
+    "name": "Kullanıcı9",
+    "username": "user9",
+    "email": "user9@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 10,
+    "name": "Kullanıcı10",
+    "username": "user10",
+    "email": "user10@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 11,
+    "name": "Kullanıcı11",
+    "username": "user11",
+    "email": "user11@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 12,
+    "name": "Kullanıcı12",
+    "username": "user12",
+    "email": "user12@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 13,
+    "name": "Kullanıcı13",
+    "username": "user13",
+    "email": "user13@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 14,
+    "name": "Kullanıcı14",
+    "username": "user14",
+    "email": "user14@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 15,
+    "name": "Kullanıcı15",
+    "username": "user15",
+    "email": "user15@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 16,
+    "name": "Kullanıcı16",
+    "username": "user16",
+    "email": "user16@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 17,
+    "name": "Kullanıcı17",
+    "username": "user17",
+    "email": "user17@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 18,
+    "name": "Kullanıcı18",
+    "username": "user18",
+    "email": "user18@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 19,
+    "name": "Kullanıcı19",
+    "username": "user19",
+    "email": "user19@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 20,
+    "name": "Kullanıcı20",
+    "username": "user20",
+    "email": "user20@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 21,
+    "name": "Kullanıcı21",
+    "username": "user21",
+    "email": "user21@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 22,
+    "name": "Kullanıcı22",
+    "username": "user22",
+    "email": "user22@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 23,
+    "name": "Kullanıcı23",
+    "username": "user23",
+    "email": "user23@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 24,
+    "name": "Kullanıcı24",
+    "username": "user24",
+    "email": "user24@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 25,
+    "name": "Kullanıcı25",
+    "username": "user25",
+    "email": "user25@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 26,
+    "name": "Kullanıcı26",
+    "username": "user26",
+    "email": "user26@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 27,
+    "name": "Kullanıcı27",
+    "username": "user27",
+    "email": "user27@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 28,
+    "name": "Kullanıcı28",
+    "username": "user28",
+    "email": "user28@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 29,
+    "name": "Kullanıcı29",
+    "username": "user29",
+    "email": "user29@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 30,
+    "name": "Kullanıcı30",
+    "username": "user30",
+    "email": "user30@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 31,
+    "name": "Kullanıcı31",
+    "username": "user31",
+    "email": "user31@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 32,
+    "name": "Kullanıcı32",
+    "username": "user32",
+    "email": "user32@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 33,
+    "name": "Kullanıcı33",
+    "username": "user33",
+    "email": "user33@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 34,
+    "name": "Kullanıcı34",
+    "username": "user34",
+    "email": "user34@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 35,
+    "name": "Kullanıcı35",
+    "username": "user35",
+    "email": "user35@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 36,
+    "name": "Kullanıcı36",
+    "username": "user36",
+    "email": "user36@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 37,
+    "name": "Kullanıcı37",
+    "username": "user37",
+    "email": "user37@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 38,
+    "name": "Kullanıcı38",
+    "username": "user38",
+    "email": "user38@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 39,
+    "name": "Kullanıcı39",
+    "username": "user39",
+    "email": "user39@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 40,
+    "name": "Kullanıcı40",
+    "username": "user40",
+    "email": "user40@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 41,
+    "name": "Kullanıcı41",
+    "username": "user41",
+    "email": "user41@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 42,
+    "name": "Kullanıcı42",
+    "username": "user42",
+    "email": "user42@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 43,
+    "name": "Kullanıcı43",
+    "username": "user43",
+    "email": "user43@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 44,
+    "name": "Kullanıcı44",
+    "username": "user44",
+    "email": "user44@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 45,
+    "name": "Kullanıcı45",
+    "username": "user45",
+    "email": "user45@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 46,
+    "name": "Kullanıcı46",
+    "username": "user46",
+    "email": "user46@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 47,
+    "name": "Kullanıcı47",
+    "username": "user47",
+    "email": "user47@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 48,
+    "name": "Kullanıcı48",
+    "username": "user48",
+    "email": "user48@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 49,
+    "name": "Kullanıcı49",
+    "username": "user49",
+    "email": "user49@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 50,
+    "name": "Kullanıcı50",
+    "username": "user50",
+    "email": "user50@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 51,
+    "name": "Kullanıcı51",
+    "username": "user51",
+    "email": "user51@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 52,
+    "name": "Kullanıcı52",
+    "username": "user52",
+    "email": "user52@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 53,
+    "name": "Kullanıcı53",
+    "username": "user53",
+    "email": "user53@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 54,
+    "name": "Kullanıcı54",
+    "username": "user54",
+    "email": "user54@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 55,
+    "name": "Kullanıcı55",
+    "username": "user55",
+    "email": "user55@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 56,
+    "name": "Kullanıcı56",
+    "username": "user56",
+    "email": "user56@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 57,
+    "name": "Kullanıcı57",
+    "username": "user57",
+    "email": "user57@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 58,
+    "name": "Kullanıcı58",
+    "username": "user58",
+    "email": "user58@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 59,
+    "name": "Kullanıcı59",
+    "username": "user59",
+    "email": "user59@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 60,
+    "name": "Kullanıcı60",
+    "username": "user60",
+    "email": "user60@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 61,
+    "name": "Kullanıcı61",
+    "username": "user61",
+    "email": "user61@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 62,
+    "name": "Kullanıcı62",
+    "username": "user62",
+    "email": "user62@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 63,
+    "name": "Kullanıcı63",
+    "username": "user63",
+    "email": "user63@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 64,
+    "name": "Kullanıcı64",
+    "username": "user64",
+    "email": "user64@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 65,
+    "name": "Kullanıcı65",
+    "username": "user65",
+    "email": "user65@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 66,
+    "name": "Kullanıcı66",
+    "username": "user66",
+    "email": "user66@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 67,
+    "name": "Kullanıcı67",
+    "username": "user67",
+    "email": "user67@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 68,
+    "name": "Kullanıcı68",
+    "username": "user68",
+    "email": "user68@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 69,
+    "name": "Kullanıcı69",
+    "username": "user69",
+    "email": "user69@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 70,
+    "name": "Kullanıcı70",
+    "username": "user70",
+    "email": "user70@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 71,
+    "name": "Kullanıcı71",
+    "username": "user71",
+    "email": "user71@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 72,
+    "name": "Kullanıcı72",
+    "username": "user72",
+    "email": "user72@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 73,
+    "name": "Kullanıcı73",
+    "username": "user73",
+    "email": "user73@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 74,
+    "name": "Kullanıcı74",
+    "username": "user74",
+    "email": "user74@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 75,
+    "name": "Kullanıcı75",
+    "username": "user75",
+    "email": "user75@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 76,
+    "name": "Kullanıcı76",
+    "username": "user76",
+    "email": "user76@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 77,
+    "name": "Kullanıcı77",
+    "username": "user77",
+    "email": "user77@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 78,
+    "name": "Kullanıcı78",
+    "username": "user78",
+    "email": "user78@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 79,
+    "name": "Kullanıcı79",
+    "username": "user79",
+    "email": "user79@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 80,
+    "name": "Kullanıcı80",
+    "username": "user80",
+    "email": "user80@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 81,
+    "name": "Kullanıcı81",
+    "username": "user81",
+    "email": "user81@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 82,
+    "name": "Kullanıcı82",
+    "username": "user82",
+    "email": "user82@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 83,
+    "name": "Kullanıcı83",
+    "username": "user83",
+    "email": "user83@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 84,
+    "name": "Kullanıcı84",
+    "username": "user84",
+    "email": "user84@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 85,
+    "name": "Kullanıcı85",
+    "username": "user85",
+    "email": "user85@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 86,
+    "name": "Kullanıcı86",
+    "username": "user86",
+    "email": "user86@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 87,
+    "name": "Kullanıcı87",
+    "username": "user87",
+    "email": "user87@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 88,
+    "name": "Kullanıcı88",
+    "username": "user88",
+    "email": "user88@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 89,
+    "name": "Kullanıcı89",
+    "username": "user89",
+    "email": "user89@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 90,
+    "name": "Kullanıcı90",
+    "username": "user90",
+    "email": "user90@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 91,
+    "name": "Kullanıcı91",
+    "username": "user91",
+    "email": "user91@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 92,
+    "name": "Kullanıcı92",
+    "username": "user92",
+    "email": "user92@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 93,
+    "name": "Kullanıcı93",
+    "username": "user93",
+    "email": "user93@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 94,
+    "name": "Kullanıcı94",
+    "username": "user94",
+    "email": "user94@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 95,
+    "name": "Kullanıcı95",
+    "username": "user95",
+    "email": "user95@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 96,
+    "name": "Kullanıcı96",
+    "username": "user96",
+    "email": "user96@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 97,
+    "name": "Kullanıcı97",
+    "username": "user97",
+    "email": "user97@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 98,
+    "name": "Kullanıcı98",
+    "username": "user98",
+    "email": "user98@example.com",
+    "gender": "male"
+  },
+  {
+    "id": 99,
+    "name": "Kullanıcı99",
+    "username": "user99",
+    "email": "user99@example.com",
+    "gender": "female"
+  },
+  {
+    "id": 100,
+    "name": "Kullanıcı100",
+    "username": "user100",
+    "email": "user100@example.com",
+    "gender": "female"
+  }
+]

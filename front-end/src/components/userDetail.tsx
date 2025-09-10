@@ -1,186 +1,206 @@
-// src/components/UserDetail.tsx
-import { useEffect, useMemo, useState } from "react";
-import { addUser, updateUser, deleteUser } from "../api.ts";
-import axios from "axios";
-import { CircleUserRound, Save, Trash2, Plus } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { updateUser, deleteUser, getUsers } from '../api';
+import { CircleUserRound, Save, Trash2, User } from 'lucide-react';
 
-// Basitleştirilmiş User type - sadece gerekli alanlar
-type User = {
-  id?: number;
+interface User {
+  id: number;
   name: string;
   username: string;
   email: string;
-};
+  gender: 'male' | 'female';
+}
 
-type Props = {
-  userId?: number | null;
-  onSaved?: (user: User) => void;
-  onDeleted?: (id: number) => void;
-};
+interface Props {
+  userId: number;
+  onUserUpdated: (user: User) => void;
+  onUserDeleted: (userId: number) => void;
+}
 
-const initialUser: User = {
-  name: "",
-  username: "",
-  email: "",
-};
-
-const UserDetail = ({ userId, onSaved, onDeleted }: Props) => {
-  const isEdit = useMemo(() => !!userId, [userId]);
-  const [user, setUser] = useState<User>(initialUser);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [fetching, setFetching] = useState<boolean>(false);
+const UserDetail = ({ userId, onUserUpdated, onUserDeleted }: Props) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fetching, setFetching] = useState(true);
 
-  // userId varsa kullanıcıyı getir
   useEffect(() => {
-    if (!userId) {
-      setUser(initialUser);
-      return;
-    }
     setFetching(true);
-    axios
-      .get<User>(`http://localhost:3000/users/${userId}`)
-      .then((res) => setUser(res.data))
-      .catch(() => setError("Kullanıcı getirilemedi"))
+    getUsers()
+      .then(users => {
+        const foundUser = users.find(u => u.id === userId);
+        if (foundUser) {
+          setUser(foundUser);
+          setError(null);
+        } else {
+          setError('Kullanıcı bulunamadı');
+        }
+      })
+      .catch(() => setError('Kullanıcı getirilirken hata oluştu'))
       .finally(() => setFetching(false));
   }, [userId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!user) return;
     const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
+    setUser(prev => prev ? { ...prev, [name]: value } : prev);
   };
 
-  // Form validasyonu
-  const isFormValid = user.name.trim() && user.username.trim() && user.email.trim();
-
-  const handleSave = async () => {
-    if (!isFormValid) {
-      setError("Lütfen tüm alanları doldurun");
-      return;
-    }
-
+  const handleUpdate = async () => {
+    if (!user) return;
     setLoading(true);
     setError(null);
     try {
-      let saved: User;
-      if (isEdit && userId) {
-        saved = await updateUser(userId, {
-          name: user.name.trim(),
-          username: user.username.trim(),
-          email: user.email.trim(),
-        });
-      } else {
-        saved = await addUser({
-          name: user.name.trim(),
-          username: user.username.trim(),
-          email: user.email.trim(),
-        });
-      }
-      onSaved?.(saved);
+      const updatedUser = await updateUser(user.id, user);
+      setUser(updatedUser);
+      onUserUpdated(updatedUser);
       
-      // Başarılı kayıt sonrası formu temizle (yeni kayıt modunda)
-      if (!isEdit) {
-        setUser(initialUser);
+      // localStorage'i de güncelle
+      const cached = localStorage.getItem('users-cache');
+      if (cached) {
+        const users = JSON.parse(cached);
+        const updatedUsers = users.map((u: User) => 
+          u.id === user.id ? updatedUser : u
+        );
+        localStorage.setItem('users-cache', JSON.stringify(updatedUsers));
       }
     } catch (e: any) {
-      setError(e?.response?.data?.message || "Kaydetme sırasında bir hata oluştu");
+      setError(e?.response?.data?.message || 'Güncelleme sırasında hata oluştu');
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!isEdit || !userId) return;
+    if (!user) return;
+    if (!confirm(`"${user.name}" kullanıcısını silmek istediğinize emin misiniz?`)) return;
     
-    if (!confirm("Bu kullanıcıyı silmek istediğinizden emin misiniz?")) {
-      return;
-    }
-
     setLoading(true);
     setError(null);
     try {
-      await deleteUser(userId);
-      onDeleted?.(userId);
+      await deleteUser(user.id);
+      onUserDeleted(user.id);
+      
+      // localStorage'dan da sil
+      const cached = localStorage.getItem('users-cache');
+      if (cached) {
+        const users = JSON.parse(cached);
+        const filteredUsers = users.filter((u: User) => u.id !== user.id);
+        localStorage.setItem('users-cache', JSON.stringify(filteredUsers));
+      }
     } catch (e: any) {
-      setError(e?.response?.data?.message || "Silme sırasında bir hata oluştu");
+      setError(e?.response?.data?.message || 'Silme sırasında hata oluştu');
     } finally {
       setLoading(false);
     }
   };
 
+  if (fetching) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="animate-pulse">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+            <div>
+              <div className="h-4 bg-gray-200 rounded w-32 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-20"></div>
+            </div>
+          </div>
+          <div className="space-y-4">
+            <div className="h-10 bg-gray-200 rounded"></div>
+            <div className="h-10 bg-gray-200 rounded"></div>
+            <div className="h-10 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error && !user) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="text-center py-12 text-gray-500">
+          <User size={48} className="mx-auto mb-4 text-gray-300" />
+          <p className="text-lg font-medium text-red-600">{error}</p>
+          <p className="text-sm">Kullanıcı bilgileri yüklenemedi</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="text-center py-12 text-gray-500">
+          <User size={48} className="mx-auto mb-4 text-gray-300" />
+          <p className="text-lg font-medium">Kullanıcı Seçin</p>
+          <p className="text-sm">Detaylarını görmek için soldaki listeden bir kullanıcı seçin</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      {/* Header */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-600">
-            <CircleUserRound size={20} className="text-blue-100" />
+          <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-600">
+            <CircleUserRound size={24} className="text-blue-100" />
           </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">
-              {isEdit ? "Kullanıcı Düzenle" : "Yeni Kullanıcı"}
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900">Kullanıcı Detayı</h2>
             <p className="text-sm text-gray-500">
-              {isEdit ? `ID: ${userId}` : "Formu doldurarak yeni kullanıcı ekleyin"}
+              ID: {user.id} • {user.gender === 'male' ? '👨 Erkek' : '👩 Kadın'}
             </p>
           </div>
         </div>
       </div>
 
-      {fetching ? (
-        <div className="p-6">
-          <div className="animate-pulse space-y-3">
-            <div className="h-10 bg-gray-200 rounded" />
-            <div className="h-10 bg-gray-200 rounded" />
-            <div className="h-10 bg-gray-200 rounded" />
-          </div>
+      {/* Form */}
+      <div className="p-6 space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Ad Soyad <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={user.name}
+            onChange={handleChange}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Ad Soyad"
+          />
         </div>
-      ) : (
-        <div className="p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Ad Soyad <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="name"
-              value={user.name}
-              onChange={handleChange}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Ad Soyad"
-              required
-            />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Kullanıcı Adı <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="username"
-              value={user.username}
-              onChange={handleChange}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="kullanici.ad"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              name="email"
-              type="email"
-              value={user.email}
-              onChange={handleChange}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="mail@ornek.com"
-              required
-            />
-          </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Email <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="email@ornek.com"
+          />
         </div>
-      )}
 
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Kullanıcı Adı <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="username"
+            value={user.username}
+            onChange={handleChange}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="kullanici.ad"
+          />
+        </div>
+      </div>
+
+      {/* Error Message */}
       {error && (
         <div className="px-6 pb-2">
           <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-3">
@@ -189,42 +209,25 @@ const UserDetail = ({ userId, onSaved, onDeleted }: Props) => {
         </div>
       )}
 
+      {/* Action Buttons */}
       <div className="p-6 border-t border-gray-200 flex items-center gap-3 justify-end">
-        {!isEdit && (
-          <button
-            onClick={() => setUser(initialUser)}
-            className="px-4 py-2 text-sm rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-          >
-            Temizle
-          </button>
-        )}
-
-        {isEdit ? (
-          <>
-            <button
-              onClick={handleDelete}
-              disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 disabled:opacity-50 transition-colors"
-            >
-              <Trash2 size={16} /> Sil
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={loading || !isFormValid}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              <Save size={16} /> {loading ? "Kaydediliyor..." : "Kaydet"}
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={handleSave}
-            disabled={loading || !isFormValid}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 transition-colors"
-          >
-            <Plus size={16} /> {loading ? "Ekleniyor..." : "Ekle"}
-          </button>
-        )}
+        <button
+          onClick={handleDelete}
+          disabled={loading}
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 disabled:opacity-50 transition-colors"
+        >
+          <Trash2 size={16} />
+          {loading ? 'Siliniyor...' : 'Sil'}
+        </button>
+        
+        <button
+          onClick={handleUpdate}
+          disabled={loading}
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+        >
+          <Save size={16} />
+          {loading ? 'Güncelleniyor...' : 'Güncelle'}
+        </button>
       </div>
     </div>
   );

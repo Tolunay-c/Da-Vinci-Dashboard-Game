@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { CircleUserRound, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-import { getUsers } from "../api.ts";
+import { getUsers } from "../api";
+
+// User interface
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  gender: 'male' | 'female';
+}
 
 // Tailwind CSS ana renkleri
 const TAILWIND_COLORS = [
@@ -18,53 +27,40 @@ const TAILWIND_COLORS = [
   { base: "bg-slate-600", light: "bg-slate-100", textLight: "text-slate-100", border: "border-slate-100" },
 ];
 
-// Tüm Tailwind class'larını önceden tanımla (Tailwind'in purge etmemesi için)
-const ALL_AVATAR_CLASSES = [
-  // Blue
-  'bg-blue-600 bg-blue-100 text-blue-100 border-blue-100',
-  // Green
-  'bg-green-600 bg-green-100 text-green-100 border-green-100',
-  // Red
-  'bg-red-600 bg-red-100 text-red-100 border-red-100',
-  // Yellow
-  'bg-yellow-600 bg-yellow-100 text-yellow-100 border-yellow-100',
-  // Purple
-  'bg-purple-600 bg-purple-100 text-purple-100 border-purple-100',
-  // Pink
-  'bg-pink-600 bg-pink-100 text-pink-100 border-pink-100',
-  // Emerald
-  'bg-emerald-600 bg-emerald-100 text-emerald-100 border-emerald-100',
-  // Indigo
-  'bg-indigo-600 bg-indigo-100 text-indigo-100 border-indigo-100',
-  // Cyan
-  'bg-cyan-600 bg-cyan-100 text-cyan-100 border-cyan-100',
-  // Orange
-  'bg-orange-600 bg-orange-100 text-orange-100 border-orange-100',
-  // Rose
-  'bg-rose-600 bg-rose-100 text-rose-100 border-rose-100',
-  // Slate
-  'bg-slate-600 bg-slate-100 text-slate-100 border-slate-100',
-];
-
-const getRandomColor = (index) => TAILWIND_COLORS[index % TAILWIND_COLORS.length];
+const getRandomColor = (index: number) => TAILWIND_COLORS[index % TAILWIND_COLORS.length];
 
 const UserTable = () => {
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
 
   useEffect(() => {
-    setLoading(true);
-    getUsers()
-      .then(data => {
-        setAllUsers(data);
+    // İlk önce localStorage'den cache'i yükle
+    const cached = localStorage.getItem('users-cache');
+    if (cached) {
+      try {
+        const parsedUsers = JSON.parse(cached);
+        setAllUsers(parsedUsers);
         setLoading(false);
+        console.log('✅ Users cache\'den yüklendi');
+      } catch (err) {
+        console.error('❌ Cache parse hatası:', err);
+        localStorage.removeItem('users-cache');
+      }
+    }
+
+    // API'den güncel veriyi al - AXIOS KULLAN
+    getUsers()
+      .then((data: User[]) => {
+        setAllUsers(data);
+        localStorage.setItem('users-cache', JSON.stringify(data));
+        console.log('✅ Users API\'den güncellendi');
       })
       .catch(error => {
-        console.error('Error fetching users:', error);
-        setLoading(false);
-      });
+        console.error('❌ API hatası:', error);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   // Pagination hesaplamaları
@@ -74,7 +70,7 @@ const UserTable = () => {
   const currentUsers = allUsers.slice(startIndex, endIndex);
 
   // Pagination fonksiyonları
-  const goToPage = (page) => {
+  const goToPage = (page: number) => {
     setCurrentPage(page);
   };
 
@@ -92,7 +88,7 @@ const UserTable = () => {
 
   // Sayfa numaralarını hesapla
   const getPageNumbers = () => {
-    const pages = [];
+    const pages: (number | string)[] = [];
     const maxVisible = 5;
     
     if (totalPages <= maxVisible) {
@@ -170,15 +166,17 @@ const UserTable = () => {
                 Email
               </th>
               <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User Name
+                Kullanıcı Adı
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Cinsiyet
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {currentUsers.map((user, idx) => {
-              // Global index kullan (pagination için)
               const globalIndex = startIndex + idx;
-              const { base, textLight, border ,light} = getRandomColor(globalIndex);
+              const { base, textLight, border } = getRandomColor(globalIndex);
               
               return (
                 <tr key={user.id} className="hover:bg-gray-50 transition-colors">
@@ -189,7 +187,7 @@ const UserTable = () => {
                       >
                         <CircleUserRound 
                           size={20} 
-                          className={`${textLight} `}
+                          className={textLight}
                         />
                       </span>
                       <div>
@@ -204,6 +202,11 @@ const UserTable = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">{user.username}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {user.gender === 'male' ? 'Erkek' : 'Kadın'}
+                    </div>
                   </td>
                 </tr>
               );
@@ -225,7 +228,6 @@ const UserTable = () => {
               Önceki
             </button>
 
-            {/* Page Numbers */}
             <div className="flex items-center gap-1">
               {getPageNumbers().map((page, index) => (
                 <span key={index}>
@@ -235,7 +237,7 @@ const UserTable = () => {
                     </span>
                   ) : (
                     <button
-                      onClick={() => goToPage(page)}
+                      onClick={() => goToPage(page as number)}
                       className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                         currentPage === page
                           ? 'bg-blue-600 text-white'

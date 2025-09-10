@@ -12,7 +12,7 @@ const menu = {
     title: "Overview",
     items: [
       { name: "Dashboard", link: "/dashboard", icon: <LayoutDashboard size={18} /> },
-      { name: "Users", link: "/users", icon: <Users size={18} /> }
+      { name: "Users Add", link: "/users-add", icon: <Users size={18} /> }
     ],
   },
   management: {
