@@ -67,12 +67,15 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
       .finally(() => setFetching(false));
   }, [userId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setUser(prev => ({ ...prev, [name]: value }));
+    setUser(prev => ({ 
+      ...prev, 
+      [name]: name === 'gender' ? (value === '' ? undefined : value as 'male' | 'female') : value 
+    }));
   };
 
-  // Form validasyonu
+  // Form validasyonu - gender zorunlu değil
   const isFormValid =
     user.name.trim() &&
     user.username.trim() &&
@@ -91,7 +94,7 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
 
   const handleSave = async () => {
     if (!isFormValid) {
-      setError("Lütfen tüm alanları doldurun");
+      setError("Lütfen tüm zorunlu alanları doldurun");
       return;
     }
 
@@ -104,21 +107,28 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
     setError(null);
     try {
       let saved: User;
+      const userData = {
+        name: user.name.trim(),
+        username: user.username.trim(),
+        email: user.email.trim(),
+        ...(user.gender && { gender: user.gender })
+      };
+
       if (isEdit && userId) {
-        saved = await updateUser(userId, {
-          name: user.name.trim(),
-          username: user.username.trim(),
-          email: user.email.trim(),
-        });
+        saved = await updateUser(userId, userData);
       } else {
-        saved = await addUser({
-          name: user.name.trim(),
-          username: user.username.trim(),
-          email: user.email.trim(),
-        });
+        saved = await addUser(userData);
         // ✅ YENİ KULLANICI EKLENDİĞİNDE LİSTEYİ GÜNCELLE
         setAllUsers(prev => [...prev, saved]);
       }
+
+      // Cache'i güncelle
+      const updatedUsers = isEdit 
+        ? allUsers.map(u => u.id === userId ? saved : u)
+        : [...allUsers, saved];
+      
+      localStorage.setItem('users-cache', JSON.stringify(updatedUsers));
+
       onSaved?.(saved);
 
       // Başarılı kayıt sonrası formu temizle (yeni kayıt modunda)
@@ -143,7 +153,13 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
     setError(null);
     try {
       await deleteUser(userId);
+      
+      // Cache'i güncelle
+      const updatedUsers = allUsers.filter(u => u.id !== userId);
+      localStorage.setItem('users-cache', JSON.stringify(updatedUsers));
+      
       onDeleted?.(userId);
+      
       // ✅ SİLME SONRASI LİSTEYİ YENİLE
       fetchUsersList();
     } catch (e: any) {
@@ -155,9 +171,8 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      {/* Form içeriği aynı kalacak... */}
       <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center gap-3">
+        <div className="flex  flex-col lg:flex-row items-center gap-3">
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-600">
             <CircleUserRound size={20} className="text-blue-100" />
           </span>
@@ -175,6 +190,7 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
       {fetching ? (
         <div className="p-6">
           <div className="animate-pulse space-y-3">
+            <div className="h-10 bg-gray-200 rounded" />
             <div className="h-10 bg-gray-200 rounded" />
             <div className="h-10 bg-gray-200 rounded" />
             <div className="h-10 bg-gray-200 rounded" />
@@ -223,6 +239,23 @@ const UserAdd = ({ userId, onSaved, onDeleted }: Props) => {
               placeholder="mail@ornek.com"
               required
             />
+          </div>
+
+          {/* Gender Seçimi */}
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Cinsiyet
+            </label>
+            <select
+              name="gender"
+              value={user.gender || ''}
+              onChange={handleChange}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+            >
+              <option value="">Seçiniz</option>
+              <option value="male">Erkek</option>
+              <option value="female">Kadın</option>
+            </select>
           </div>
         </div>
       )}

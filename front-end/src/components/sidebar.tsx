@@ -1,93 +1,144 @@
-import { User, LayoutDashboard, Settings, Users } from "lucide-react";
+import { LayoutDashboard, UserPlus, Users, Menu, X } from "lucide-react";
+import { MenuType } from "../App";
+import { useState, useEffect } from "react";
 
-const menu = {
-  logo: {
-    type: "image",
-    src: "/logo.png",
-    alt: "Logo",
-    link: "/"
-  },
-  overview: {
-    type: "section",
-    title: "Overview",
-    items: [
-      { name: "Dashboard", link: "/dashboard", icon: <LayoutDashboard size={18} /> },
-      { name: "Users Add", link: "/users-add", icon: <Users size={18} /> }
-    ],
-  },
-  management: {
-    type: "section",
-    title: "Management",
-    items: [
-      { name: "User Detail", link: "/user-detail", icon: <User size={18} /> },
-      { name: "Settings", link: "/settings", icon: <Settings size={18} /> }
-    ],
-  }
-};
+interface SidebarProps {
+  activeMenu: MenuType;
+  onMenuChange: (menu: MenuType) => void;
+}
 
-const Sidebar = () => {
+const Sidebar = ({ activeMenu, onMenuChange }: SidebarProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Mobil menü açıkken body scroll'unu engelle
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
+  const items = [
+    { id: "dashboard" as MenuType, name: "Dashboard", icon: LayoutDashboard, desc: "Ana sayfa görünümü" },
+    { id: "user-add" as MenuType, name: "Kullanıcı Ekle", icon: UserPlus, desc: "Yeni kullanıcı oluştur" },
+    { id: "user-detail" as MenuType, name: "Kullanıcı Yönetimi", icon: Users, desc: "Kullanıcıları düzenle/sil" },
+  ];
+
+  const handleMenuClick = (menuId: MenuType) => {
+    onMenuChange(menuId);
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <div className="h-full p-6 bg-white border-r border-gray-200 flex flex-col">
-      {/* Logo */}
-      <div className="mb-8 flex items-center justify-center">
-        <a href={menu.logo.link} className="transition-opacity hover:opacity-80">
-          <img 
-            src={menu.logo.src} 
-            alt={menu.logo.alt} 
-            className="h-12 w-auto" 
-          />
-        </a>
+    <>
+      {/* MOBILE TOP BAR */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div className="flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">D</span>
+            </div>
+            <span className="text-lg font-bold text-gray-900">Da Vinci</span>
+          </div>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            aria-label={mobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex flex-col justify-between h-[90%]">
-        {/* Overview Section */}
-        <div>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4 px-3">
-            {menu.overview.title}
-          </h2>
-          <ul className="space-y-1">
-            {menu.overview.items.map((item) => (
-              <li key={item.link}>
-                <a
-                  href={item.link}
-                  className="flex items-center gap-3 px-3 py-2.5 text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
-                >
-                  <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
-                    {item.icon}
-                  </span>
-                  <span className="text-sm font-medium">{item.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+      {/* OVERLAY */}
+      {mobileMenuOpen && (
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+          bg-white border-r border-gray-200 flex flex-col
+          transition-transform duration-300 ease-in-out h-full
+          ${mobileMenuOpen 
+            ? 'fixed inset-y-0 left-0 w-[280px] z-50 translate-x-0' 
+            : 'fixed inset-y-0 left-0 w-[280px] z-50 -translate-x-full'
+          }
+          lg:relative  lg:w-[280px] lg:translate-x-0
+        `}
+      >
+        {/* Desktop Logo */}
+        <div className="hidden lg:flex p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">D</span>
+            </div>
+            <div>
+              <div className="text-xl font-bold text-gray-900">Da Vinci</div>
+              <div className="text-xs text-gray-500">Admin Dashboard</div>
+            </div>
+          </div>
         </div>
 
-        {/* Management Section */}
-        <div>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4 px-3">
-            {menu.management.title}
-          </h2>
-          <ul className="space-y-1">
-            {menu.management.items.map((item) => (
-              <li key={item.link}>
-                <a
-                  href={item.link}
-                  className="flex items-center gap-3 px-3 py-2.5 text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 group"
-                >
-                  <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
-                    {item.icon}
-                  </span>
-                  <span className="text-sm font-medium">{item.name}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+        {/* Mobile Logo */}
+        <div className="lg:hidden p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">D</span>
+              </div>
+              <div>
+                <div className="text-xl font-bold text-gray-900">Da Vinci</div>
+                <div className="text-xs text-gray-500">Admin Dashboard</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </nav>
 
-     
-    </div>
+        {/* MENU LIST - Bu kısım flex-1 olmalı */}
+        <nav className="flex-1 p-4 overflow-y-auto">
+          <div className="space-y-1">
+            {items.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeMenu === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleMenuClick(item.id)}
+                  className={`
+                    w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left 
+                    transition-all duration-200
+                    ${isActive
+                      ? "bg-blue-50 text-blue-700 border-l-4 border-blue-700 shadow-sm"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm"
+                    }
+                  `}
+                >
+                  <Icon size={20} className="flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium truncate">{item.name}</div>
+                    <div className="text-xs text-gray-500 truncate">{item.desc}</div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Footer - flex-shrink-0 ile sabit tutulur */}
+        <div className="p-4 border-t border-gray-200 flex-shrink-0">
+          <div className="text-xs text-gray-500 text-center">Version 1.0.0</div>
+        </div>
+      </aside>
+    </>
   );
 };
 

@@ -29,7 +29,7 @@ function useUsers() {
     }
     
     // API'den güncel veriyi al
-    fetch('http://localhost:3001/users') // Backend port'una göre ayarla
+    fetch('http://localhost:3000/users') // Backend port'una göre ayarla
       .then(res => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -51,7 +51,7 @@ function useUsers() {
 
   // CRUD işlemleri için yardımcı fonksiyonlar
   const addUser = (newUser: Omit<User, 'id'>) => {
-    return fetch('http://localhost:3001/users', {
+    return fetch('http://localhost:3000/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ function useUsers() {
   };
 
   const updateUser = (id: number, userData: Partial<User>) => {
-    return fetch(`http://localhost:3001/users/${id}`, {
+    return fetch(`http://localhost:3000/users/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ function useUsers() {
   };
 
   const deleteUser = (id: number) => {
-    return fetch(`http://localhost:3001/users/${id}`, {
+    return fetch(`http://localhost:3000/users/${id}`, {
       method: 'DELETE',
     })
       .then(res => res.json())

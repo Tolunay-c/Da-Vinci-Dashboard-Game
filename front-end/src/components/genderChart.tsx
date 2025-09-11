@@ -161,7 +161,7 @@ const GenderChart = () => {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       {/* Header */}
       <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col 3xl:flex-row items-center justify-between gap-4 3xl:gap-0">
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-purple-600">
               <PieChart size={20} className="text-purple-100" />
