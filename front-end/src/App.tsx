@@ -145,18 +145,7 @@ function App() {
               </div>
             )}
 
-            {activeMenu === 'user-detail' && selectedUserId && (
-              <div className="mt-6">
-                <UserDetail 
-                  userId={selectedUserId} 
-                  onUserDeleted={() => {
-                    setActiveMenu('dashboard');
-                    handleUserDataChange();
-                  }}  
-                  onUserUpdated={handleUserDataChange}
-                />
-              </div>
-            )}
+           
           </div>
       </div>
     </div>
